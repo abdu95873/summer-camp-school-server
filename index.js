@@ -1,0 +1,107 @@
+const express = require('express');
+const cors = require('cors');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+require('dotenv').config();
+const port = 5000 || process.env.PORT;
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mh16alw.mongodb.net/?retryWrites=true&w=majority`;
+console.log(uri);
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+async function run(){
+    try{
+        const usersCollection = client.db('music_hub').collection('users');
+        const classCollection = client.db('music_hub').collection('classes');
+
+        /* =============================================================================================================
+        Users Started
+        ================================================================================================================*/
+        app.get('/users',async (req,res)=>{
+            let query = {};
+            if(req.query.email){
+                query = {
+                    email: req.query.email
+                }
+            }
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
+        });
+        app.post('/user', async (req, res) => {
+            const body = req.body;
+            const result = await usersCollection.insertOne(body);
+            res.send(result);
+        });
+        app.put('/update-user-role', async(req, res)=> {
+            const body = req.body;
+            const options = {upsert: true};
+            const id = body.id;
+            const filter = {_id: new ObjectId(id)};
+            const updateDoc ={
+                $set:{
+                    role: body.role
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+
+        })
+        /* =============================================================================================================
+        Users end
+        ================================================================================================================*/
+        /* =============================================================================================================
+        Class Started
+        ================================================================================================================*/
+        app.get('/classes',async (req,res)=>{
+            let query = {};
+            if(req.query.email){
+                query = {
+                    email: req.query.email
+                }
+            }
+            const classes = await classCollection.find(query).toArray();
+            res.send(classes);
+        });
+        app.post('/class', async (req, res) => {
+            const body = req.body;
+            const result = await classCollection.insertOne(body);
+            res.send(result);
+        });
+        app.put('/manage-class', async(req, res)=> {
+            const body = req.body;
+            const options = {upsert: true};
+            const id = body.id;
+            const filter = {_id: new ObjectId(id)};
+            const updateDoc ={
+                $set:{
+                    status: body.status,
+                    feedback: body.feedback
+                }
+            }
+            const result = await classCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+
+        })
+        /* =============================================================================================================
+        Class ended
+        ================================================================================================================*/
+
+        app.get('/', (req,res) => {
+            res.send('Music Hub is running');
+        });
+    }
+    finally{
+
+    }
+
+}
+run().catch(console.log);
+
+
+app.listen(port, () => {
+    console.log(`App is running on port: ${port}`);
+})
