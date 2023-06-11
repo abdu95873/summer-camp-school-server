@@ -86,7 +86,7 @@ async function run(){
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         });
-        app.post('/user', async (req, res) => {
+        app.post('/user',verifyJWT, async (req, res) => {
             const body = req.body;
             const result = await usersCollection.insertOne(body);
             res.send(result);
