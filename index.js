@@ -86,7 +86,7 @@ async function run(){
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         });
-        app.post('/user',verifyJWT, async (req, res) => {
+        app.post('/user', async (req, res) => {
             const body = req.body;
             const result = await usersCollection.insertOne(body);
             res.send(result);
@@ -184,15 +184,7 @@ async function run(){
         PAyment start
         ================================================================================================================*/
 
-        //  // payment related api
-        //  app.post('/create-payment-intent', verifyJWT, async (req, res) => {
-        //     const { price } = req.body;
-        //     const amount = parseInt(price * 100);
-        //     const paymentIntent = await stripe.paymentIntents.create({
-        //       amount: amount,
-        //       currency: 'usd',
-        //       payment_method_types: ['card']
-        //     });
+       
       
         //     res.send({
         //       clientSecret: paymentIntent.client_secret
