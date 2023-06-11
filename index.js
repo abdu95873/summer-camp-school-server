@@ -130,9 +130,9 @@ async function run(){
         ================================================================================================================*/
         app.get('/classes',async (req,res)=>{
             let query = {};
-            if(req.query.email){
+            if(req.query.instructorEmail){
                 query = {
-                    email: req.query.email
+                    instructorEmail: req.query.instructorEmail
                 }
             }
             const classes = await classCollection.find(query).toArray();
@@ -140,11 +140,6 @@ async function run(){
         });
         app.post('/class', async (req, res) => {
             const body = req.body;
-
-            // const decodedEmail = req.decoded.email;
-            // if (email !== decodedEmail) {
-            //   return res.status(403).send({ error: true, message: 'forbidden access' })
-            // }
             
             const result = await classCollection.insertOne(body);
             res.send(result);
@@ -180,6 +175,7 @@ async function run(){
               });
             res.send(classes);
           });
+
         /* =============================================================================================================
         Class ended
         ================================================================================================================*/
