@@ -79,6 +79,11 @@ async function run(){
                 }
                 
             }
+            // const decodedEmail = req.decoded.email;
+            // if (email !== decodedEmail) {
+            //   return res.status(403).send({ error: true, message: 'forbidden access' })
+            // }
+
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         });
@@ -133,8 +138,14 @@ async function run(){
             const classes = await classCollection.find(query).toArray();
             res.send(classes);
         });
-        app.post('/class',verifyJWT, async (req, res) => {
+        app.post('/class', async (req, res) => {
             const body = req.body;
+
+            // const decodedEmail = req.decoded.email;
+            // if (email !== decodedEmail) {
+            //   return res.status(403).send({ error: true, message: 'forbidden access' })
+            // }
+            
             const result = await classCollection.insertOne(body);
             res.send(result);
         });
