@@ -49,7 +49,7 @@ async function run(){
         /* =============================================================================================================
         Getting All Data Started
         ================================================================================================================*/
-        app.get('/all-data',async (req,res)=>{
+        app.get('/all-data', async (req,res)=>{
             let userQuery = {role: "instructor"};
             let classQuery = {};
             if(req.query.useremail){
@@ -134,7 +134,7 @@ async function run(){
             const classes = await classCollection.find(query).toArray();
             res.send(classes);
         });
-        app.post('/class', async (req, res) => {
+        app.post('/class',verifyJWT, async (req, res) => {
             const body = req.body;
             const result = await classCollection.insertOne(body);
             res.send(result);
