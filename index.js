@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const port = 5000 || process.env.PORT;
 const app = express();
+const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY)
+
 
 app.use(cors());
 app.use(express.json());
@@ -179,6 +181,34 @@ async function run(){
         /* =============================================================================================================
         Class ended
         ================================================================================================================*/
+
+
+ /* =============================================================================================================
+        PAyment start
+        ================================================================================================================*/
+
+        //  // payment related api
+        //  app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+        //     const { price } = req.body;
+        //     const amount = parseInt(price * 100);
+        //     const paymentIntent = await stripe.paymentIntents.create({
+        //       amount: amount,
+        //       currency: 'usd',
+        //       payment_method_types: ['card']
+        //     });
+      
+        //     res.send({
+        //       clientSecret: paymentIntent.client_secret
+        //     })
+        //   })
+
+           /* =============================================================================================================
+        payment ended
+        ================================================================================================================*/
+
+
+
+
 
         app.get('/', (req,res) => {
             res.send('Music Hub is running');
