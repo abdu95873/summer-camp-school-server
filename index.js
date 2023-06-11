@@ -81,10 +81,7 @@ async function run(){
                 }
                 
             }
-            // const decodedEmail = req.decoded.email;
-            // if (email !== decodedEmail) {
-            //   return res.status(403).send({ error: true, message: 'forbidden access' })
-            // }
+            
 
             const users = await usersCollection.find(query).toArray();
             res.send(users);
